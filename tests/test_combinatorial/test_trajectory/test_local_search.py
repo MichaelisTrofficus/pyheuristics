@@ -1,5 +1,5 @@
-import numpy as np
 from copy import deepcopy
+
 from combinatorial.trajectory.local_search import LocalSearch
 
 
