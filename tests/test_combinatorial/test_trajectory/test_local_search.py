@@ -7,10 +7,12 @@ def test_local_search():
     """
     Solve an instance of Knapsack problem
     """
+
     class KnapsackProblem(LocalSearch):
         """
         Implementation of Knapsack problem as in Wikipedia example: https://en.wikipedia.org/wiki/Knapsack_problem
         """
+
         # Order list of values according to weight
         LIST_OF_VALUES = [1, 2, 2, 10, 4]
         LIST_OF_WEIGHTS = [1, 1, 2, 4, 12]
@@ -52,4 +54,3 @@ def test_local_search():
 
     # The optimal result is picking the two 1kg blocks, the 2 kg block and the 4 kg block.
     assert knapsack.search(20) == [1, 1, 1, 1, 0]
-

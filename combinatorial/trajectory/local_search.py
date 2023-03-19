@@ -7,6 +7,7 @@ class LocalSearch(metaclass=ABCMeta):
     """
     Implementation of LocalSearch algorithm
     """
+
     def __init__(self, init_sol, improve_strategy="first"):
         self.init_sol = init_sol
         self.improve_strategy = improve_strategy
@@ -35,10 +36,7 @@ class LocalSearch(metaclass=ABCMeta):
         """
         curr = self.init_sol
         for _ in range(max_iter):
-            candidate, cost = self.improve(
-                curr,
-                self.get_neighbors(curr)
-            )
+            candidate, cost = self.improve(curr, self.get_neighbors(curr))
             if cost > self.objective_fn(curr):
                 curr = candidate
             else:
