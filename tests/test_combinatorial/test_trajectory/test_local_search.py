@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from combinatorial.trajectory.local_search import LocalSearch
+from pyheuristics.combinatorial.trajectory.local_search import LocalSearch
 
 
 def test_local_search():
@@ -27,7 +27,7 @@ def test_local_search():
             total_value = 0
             for index, in_bag in enumerate(sol):
                 total_value += self.LIST_OF_VALUES[index] * in_bag
-            return total_value
+            return -total_value
 
         def get_total_weight(self, sol):
             total_weight = 0
@@ -53,4 +53,6 @@ def test_local_search():
     knapsack = KnapsackProblem(init_sol=init_sol)
 
     # The optimal result is picking the two 1kg blocks, the 2 kg block and the 4 kg block.
-    assert knapsack.search(20) == [1, 1, 1, 1, 0]
+    execution_result = knapsack.search(20)
+    assert execution_result.sol == [1, 1, 1, 1, 0]
+    assert execution_result.cost == -15

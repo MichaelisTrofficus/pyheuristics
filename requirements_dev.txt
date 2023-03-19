@@ -1,2 +1,4 @@
 -r requirements_test.txt
-pre-commit==3.2.0
+jupyter
+pre-commit
+twine
