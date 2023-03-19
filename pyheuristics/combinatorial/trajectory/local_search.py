@@ -69,6 +69,9 @@ class LocalSearch(metaclass=ABCMeta):
         curr_sol = self.init_sol
         curr_cost = self.objective_fn(curr_sol)
 
+        if history:
+            history_arr.append(curr_cost)
+
         while it <= max_iter:
             candidate_sol, candidate_cost = self.improve(
                 curr_sol, curr_cost, self.get_neighbors(curr_sol)
