@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 from pyheuristics.combinatorial.trajectory.local_search import LocalSearch
+from pyheuristics.combinatorial.utils.search_strategies import best_strategy
 
 
 def test_local_search():
@@ -20,7 +21,7 @@ def test_local_search():
 
         # We treat each solution as an array of booleans. 1 means the object is inside the knapsack, 0 that it isn't
 
-        def objective_fn(self, sol):
+        def fn(self, sol):
             """
             Computes the total value of all the objects inside the knapsack
             """
@@ -35,19 +36,24 @@ def test_local_search():
                 total_weight += self.LIST_OF_WEIGHTS[index] * in_bag
             return total_weight
 
-        def get_neighbors(self, sol):
+        def move(self):
             """
             For example, perform a permutation in each element of the array
             """
+
+            # We will select a set of neighbors from the current solution / state
+
             neighbors = []
 
-            for i in range(len(sol)):
-                neighbor = deepcopy(sol)
-                neighbor[i] = 0 if sol[i] else 1
+            for i in range(len(self.sol)):
+                neighbor = deepcopy(self.sol)
+                neighbor[i] = 0 if self.sol[i] else 1
 
                 if self.get_total_weight(neighbor) <= self.TOTAL_CAPACITY:
                     neighbors.append(neighbor)
-            return neighbors
+
+            # Now, simply select the best neighbor using a `best` strategy
+            return best_strategy(self.fn, self.sol, self.cost, neighbors)
 
     init_sol = [1, 1, 0, 0, 0]
     knapsack = KnapsackProblem(init_sol=init_sol)
