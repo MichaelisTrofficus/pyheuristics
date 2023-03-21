@@ -53,6 +53,6 @@ def test_local_search():
     knapsack = KnapsackProblem(init_sol=init_sol)
 
     # The optimal result is picking the two 1kg blocks, the 2 kg block and the 4 kg block.
-    execution_result = knapsack.search(20)
+    execution_result = knapsack.run(20)
     assert execution_result.sol == [1, 1, 1, 1, 0]
     assert execution_result.cost == -15

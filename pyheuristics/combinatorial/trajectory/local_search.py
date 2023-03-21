@@ -57,7 +57,7 @@ class LocalSearch(metaclass=ABCMeta):
     def get_neighbors(self, sol):
         raise NotImplementedError
 
-    def search(self, max_iter: int = 1000, verbose=0, history=False) -> ExecutionResult:
+    def run(self, max_iter: int = 1000, verbose=0, history=False) -> ExecutionResult:
         """
         Args:
             max_iter: Maximum iterations before stopping the algorithm
