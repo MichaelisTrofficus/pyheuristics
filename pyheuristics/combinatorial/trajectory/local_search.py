@@ -1,7 +1,9 @@
-import abc
-from abc import ABCMeta
+from abc import ABC
 from typing import Callable, Union
+
+from pyheuristics.combinatorial.trajectory.base import TrajectoryMethod
 from pyheuristics.execution_result import ExecutionResult
+
 
 # TODO: Maybe move these two method to another directory in the future.
 
@@ -48,7 +50,7 @@ def best_strategy(objective_fn, curr_sol, curr_cost, neighbors):
     return best, curr_cost
 
 
-class LocalSearch(metaclass=ABCMeta):
+class LocalSearch(TrajectoryMethod, ABC):
     def __init__(self, init_sol, strategy: Union[Callable, str] = "first"):
         """
         Implementation of the LocalSearch algorithm
@@ -72,13 +74,11 @@ class LocalSearch(metaclass=ABCMeta):
         self.init_sol = init_sol
 
         if strategy not in ["first", "best"] and type(strategy) != Callable:
-            raise NotImplementedError(
-                "improve_strategy must be one of ['first', 'best']"
-            )
+            raise NotImplementedError("strategy must be one of ['first', 'best']")
 
         self.strategy = strategy
 
-    def improve(self, curr_sol, curr_cost, neighbors: list):
+    def _improve(self, curr_sol, curr_cost, neighbors: list):
         if self.strategy == "first":
             return first_strategy(self.objective_fn, curr_sol, curr_cost, neighbors)
         elif self.strategy == "best":
@@ -86,14 +86,6 @@ class LocalSearch(metaclass=ABCMeta):
         else:
             # User-defined improve strategies will be called here
             return self.strategy(self.objective_fn, curr_sol, curr_cost, neighbors)
-
-    @abc.abstractmethod
-    def objective_fn(self, sol):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def get_neighbors(self, sol):
-        raise NotImplementedError
 
     def run(self, max_iter: int = 1000, verbose=0, history=False) -> ExecutionResult:
         """
@@ -111,7 +103,7 @@ class LocalSearch(metaclass=ABCMeta):
             history_arr.append(curr_cost)
 
         while it <= max_iter:
-            candidate_sol, candidate_cost = self.improve(
+            candidate_sol, candidate_cost = self._improve(
                 curr_sol, curr_cost, self.get_neighbors(curr_sol)
             )
             if curr_cost - candidate_cost > 0:

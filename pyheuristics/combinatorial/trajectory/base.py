@@ -1,14 +1,20 @@
 import abc
-from abc import ABCMeta
+from abc import ABC
 
 
-class NeighborhoodStructure(ABCMeta):
+class TrajectoryMethod(ABC):
     """
-    Abstract Base Class for defining Neighborhood Structures. Simply implement
-    method `get_neighbors`, which will receive the current solution and will
-    return a list of neighbors
+    Abstract Base Class for Trajectory Methods.
     """
 
     @abc.abstractmethod
-    def get_neighbors(self, sol) -> list:
+    def objective_fn(self, sol):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_neighbors(self, sol):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def run(self, **kwargs):
         raise NotImplementedError
