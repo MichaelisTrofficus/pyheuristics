@@ -4,7 +4,7 @@ from pyheuristics.combinatorial.trajectory.base import TrajectoryMethod
 from pyheuristics.execution_result import ExecutionResult
 
 
-class SimulatedAnnealing(ABC, TrajectoryMethod):
+class SimulatedAnnealing(TrajectoryMethod, ABC):
     def __init__(
         self,
         init_sol,

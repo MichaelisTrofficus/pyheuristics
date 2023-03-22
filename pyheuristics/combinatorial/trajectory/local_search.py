@@ -1,11 +1,12 @@
 from abc import ABC
+from typing import Any
 
 from pyheuristics.combinatorial.trajectory.base import TrajectoryMethod
 from pyheuristics.execution_result import ExecutionResult
 
 
 class LocalSearch(TrajectoryMethod, ABC):
-    def __init__(self, init_sol):
+    def __init__(self, init_sol: Any):
         """
         Implementation of the LocalSearch algorithm
 
