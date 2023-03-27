@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Any
 
-from pyheuristics.combinatorial.trajectory.base import TrajectoryMethod
+from pyheuristics.trajectory.base import TrajectoryMethod
 from pyheuristics.execution_result import ExecutionResult
 
 

@@ -1,15 +1,18 @@
 from abc import ABC
+from typing import Any
 
-from pyheuristics.combinatorial.trajectory.base import TrajectoryMethod
+from pyheuristics.trajectory.base import TrajectoryMethod
 from pyheuristics.execution_result import ExecutionResult
+from pyheuristics.trajectory.annealing.cooling_schedules import BaseCoolingSchedule
 
 
 class SimulatedAnnealing(TrajectoryMethod, ABC):
     def __init__(
         self,
-        init_sol,
+        init_sol: Any,
         t_min: float,
         t_max: float,
+        cooling_schedule: BaseCoolingSchedule,
     ):
         """
         Implementation of the LocalSearch algorithm

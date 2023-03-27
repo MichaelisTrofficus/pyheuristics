@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-from pyheuristics.combinatorial.trajectory.local_search import LocalSearch
-from pyheuristics.combinatorial.utils.search_strategies import best_strategy
+from pyheuristics.trajectory import LocalSearch
+from pyheuristics.utils.search_strategies import best_strategy
 
 
 def test_local_search():
