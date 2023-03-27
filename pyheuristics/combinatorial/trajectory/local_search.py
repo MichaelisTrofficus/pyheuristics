@@ -32,18 +32,19 @@ class LocalSearch(TrajectoryMethod, ABC):
         for i in range(max_iter):
             candidate_sol, candidate_cost = self._get_sol_and_cost(self.move())
 
-            if verbose > 0:
-                print(
-                    f"Iteration: {i +1} | Current solution cost: {candidate_cost} | Best solution cost: {self.cost}"
-                )
-
             if self.cost - candidate_cost > 0:
                 self.sol = candidate_sol
                 self.cost = candidate_cost
 
                 if history:
                     history_arr.append(self.cost)
+
             else:
                 break
+
+            if verbose > 0:
+                print(
+                    f"Iteration: {i +1} | Current solution cost: {candidate_cost} | Best solution cost: {self.cost}"
+                )
 
         return ExecutionResult(sol=self.sol, cost=self.cost, history=history_arr)
