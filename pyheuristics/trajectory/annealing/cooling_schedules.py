@@ -17,19 +17,20 @@ class CoolingSchedule(ABC):
         return self._temp
 
     @abc.abstractmethod
-    def update(self, *args, **kwargs):
+    def update(self, *args, **kwargs) -> "CoolingSchedule":
         raise NotImplementedError(
             "Implement the `update` the cooling schedule method for "
         )
 
 
 class LinearCoolingSchedule(CoolingSchedule):
-    def __init__(self, initial_temp: float, beta: float):
+    def __init__(self, initial_temp: float, alpha: float):
         super(LinearCoolingSchedule, self).__init__(initial_temp)
-        self.beta = beta
+        self.alpha = alpha
 
     def update(self):
-        self._temp -= self.beta
+        self._temp -= self.alpha
+        return self
 
 
 class GeometricCoolingSchedule(CoolingSchedule):
@@ -42,12 +43,14 @@ class GeometricCoolingSchedule(CoolingSchedule):
 
     def update(self):
         self._temp *= self.alpha
+        return self
 
 
 class SlowDecreaseCoolingSchedule(CoolingSchedule):
-    def __init__(self, initial_temp: float, beta: float):
+    def __init__(self, initial_temp: float, alpha: float):
         super(SlowDecreaseCoolingSchedule, self).__init__(initial_temp)
-        self.beta = beta
+        self.alpha = alpha
 
     def update(self):
-        self._temp = self._temp / (1 + self.beta * self._temp)
+        self._temp = self._temp / (1 + self.alpha * self._temp)
+        return self
