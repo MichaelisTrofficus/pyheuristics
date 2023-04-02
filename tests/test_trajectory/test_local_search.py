@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from pyheuristics.trajectory import LocalSearch
+from pyheuristics.trajectory.local_search import LocalSearch
 from pyheuristics.utils.search_strategies import best_strategy
 
 
