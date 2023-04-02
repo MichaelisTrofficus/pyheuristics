@@ -8,7 +8,7 @@ from pyheuristics.execution_result import ExecutionResult
 from pyheuristics.trajectory.annealing.cooling_schedules import CoolingSchedule
 
 
-class InhomogeneousSimulatedAnnealing(TrajectoryMethod, ABC):
+class SimulatedAnnealing(TrajectoryMethod, ABC):
     def __init__(
         self,
         init_sol: Any,
@@ -45,12 +45,12 @@ class InhomogeneousSimulatedAnnealing(TrajectoryMethod, ABC):
             neighbor, neighbor_E = self._get_sol_and_cost(self.move())
             dE = self.cost - self.fn(neighbor)
 
-            if dE > 0:
+            if dE >= 0:
                 self.sol = neighbor
                 self.cost = neighbor_E
                 history_arr.append(neighbor_E)
             else:
-                if random.uniform(0, 1) < math.exp(-dE / self.current_temp):
+                if random.uniform(0, 1) < math.exp(dE / self.current_temp):
                     self.sol = neighbor
                     self.cost = neighbor_E
                     history_arr.append(neighbor_E)
@@ -58,67 +58,6 @@ class InhomogeneousSimulatedAnnealing(TrajectoryMethod, ABC):
             if self.cost < best_cost:
                 best_sol = self.sol
                 best_cost = self.cost
-
-            self.current_temp = self.cooling_schedule.update().temp
-
-        return ExecutionResult(sol=best_sol, cost=best_cost, history=history_arr)
-
-
-class HomogeneousSimulatedAnnealing(TrajectoryMethod, ABC):
-    def __init__(
-        self,
-        init_sol: Any,
-        cooling_schedule: CoolingSchedule,
-        max_iter_per_temp: int = 100,
-    ):
-        """
-        Implementation of the LocalSearch algorithm
-
-        Args:
-            init_sol: The initial solution, i.e., the starting point of the trajectory. This parameter
-                can be anything: a string, an array, a graph, etc. Basically, the data structure that best
-                represents a solution to the problem.
-
-            cooling_schedule: A cooling schedule
-
-            max_iter_per_temp: Number of iterations per each temperature
-        """
-        self.sol, self.cost = self._get_sol_and_cost(init_sol)
-
-        self.cooling_schedule = cooling_schedule
-        self.max_iter_per_temp = max_iter_per_temp
-
-        self.current_temp = self.cooling_schedule.temp
-        self.final_temp = self.cooling_schedule.final_temp
-
-    def run(self, verbose=0, history=False) -> ExecutionResult:
-        """
-        Args:
-            verbose:
-            history: pass
-        """
-        best_sol = self.sol
-        best_cost = self.cost
-        history_arr = [self.cost]
-
-        while self.current_temp >= self.final_temp:
-            for _ in range(self.max_iter_per_temp):
-                neighbor, neighbor_E = self.__getattribute__(self.move())
-                dE = self.cost - self.fn(neighbor)
-
-                if dE > 0:
-                    self.sol = neighbor
-                    self.cost = neighbor_E
-                    history_arr.append(neighbor_E)
-                else:
-                    if random.uniform(0, 1) < math.exp(-dE / self.current_temp):
-                        self.sol = neighbor
-                        self.cost = neighbor_E
-                        history_arr.append(neighbor_E)
-
-                if self.cost < best_cost:
-                    best_sol = self.cost
-                    best_cost = self.cost
 
             self.current_temp = self.cooling_schedule.update().temp
 

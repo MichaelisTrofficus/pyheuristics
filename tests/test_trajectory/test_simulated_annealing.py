@@ -7,10 +7,7 @@ from pyheuristics.trajectory.annealing.cooling_schedules import (
     SlowDecreaseCoolingSchedule,
 )
 
-from pyheuristics.trajectory.annealing.simulated_annealing import (
-    HomogeneousSimulatedAnnealing,
-    InhomogeneousSimulatedAnnealing,
-)
+from pyheuristics.trajectory.annealing.simulated_annealing import SimulatedAnnealing
 
 
 def test_linear_cooling_schedule():
@@ -43,7 +40,7 @@ def test_slow_decrease_cooling_schedule():
     assert cs.temp == 100 / (1 + 0.01 * 100)
 
 
-def test_inhomogeneous_simulated_annealing():
+def test_simulated_annealing():
     """
     Maximize the continuous function:
         f(x) = x^3 - 60x^2 + 900x + 100
@@ -54,9 +51,10 @@ def test_inhomogeneous_simulated_annealing():
 
     The initial solution is 10011 (x=19, f(x) = 2399)
     """
-    import matplotlib.pyplot as plt
 
-    class MaximizeSimpleFunction(InhomogeneousSimulatedAnnealing):
+    random.seed(312)
+
+    class MaximizeSimpleFunction(SimulatedAnnealing):
         def fn(self, sol: Any) -> float:
             binary_to_decimal = int(sol, 2)
             return -(
@@ -77,12 +75,9 @@ def test_inhomogeneous_simulated_annealing():
 
             return "".join(_list)
 
-    cs = GeometricCoolingSchedule(initial_temp=1000, final_temp=5, alpha=0.9)
+    cs = GeometricCoolingSchedule(initial_temp=25000.0, final_temp=2.5, alpha=0.9)
     optim_problem = MaximizeSimpleFunction(init_sol="10011", cooling_schedule=cs)
     execution_result = optim_problem.run()
-
-    plt.plot(execution_result.history)
-    plt.show()
 
     assert execution_result.sol == "01010"
     assert execution_result.cost == -4100
