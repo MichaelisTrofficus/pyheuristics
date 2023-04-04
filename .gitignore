@@ -131,3 +131,4 @@ dmypy.json
 # Pycharm Env
 .idea/
 notebooks/
+examples/

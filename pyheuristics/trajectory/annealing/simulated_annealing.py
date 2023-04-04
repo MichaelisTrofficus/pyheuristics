@@ -15,7 +15,7 @@ class SimulatedAnnealing(TrajectoryMethod, ABC):
         cooling_schedule: CoolingSchedule,
     ):
         """
-        Implementation of the InHomogeneous Simulated Annealing
+        Implementation of the Inhomogeneous Simulated Annealing
 
         Args:
             init_sol: The initial solution, i.e., the starting point of the trajectory. This parameter
@@ -34,8 +34,8 @@ class SimulatedAnnealing(TrajectoryMethod, ABC):
     def run(self, verbose=0, history=False) -> ExecutionResult:
         """
         Args:
-            verbose:
-            history: pass
+            verbose: The verbosity
+            history: If we want to plot a history of the array
         """
         best_sol = self.sol
         best_cost = self.cost
